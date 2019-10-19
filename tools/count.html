@@ -40,6 +40,7 @@ input{width:200px;height:100px;line-height:100px;font-size:50px;color:#CC0000;}
 var time1;
 var time2;
 var length = 30000; //时间间隔毫秒
+var interval;
 $(document).ready(function() {
     $(".count").click(function(){
     	count = $(".times").html();
@@ -53,6 +54,7 @@ $(document).ready(function() {
 
     //开始计时
     $(".start").click(function(){
+		clearInterval(interval);
     	time1 = Date.parse(new Date());
 		$("#countdown").html('还剩 60:00');
     	$(".times").html(0);
