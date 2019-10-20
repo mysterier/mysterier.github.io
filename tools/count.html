@@ -43,20 +43,28 @@ var length = 30000; //时间间隔毫秒
 var interval;
 var starTime;
 $(document).ready(function() {
+	init();
+
     $(".count").click(function(){
     	count = $(".times").html();
     	time2 =  Date.parse(new Date());
     	diff = Number(time2) - Number(time1);
     	if (diff > length || count == 0){
-        	$(".times").html(Number(count) + Number(1));
+    		countStr = Number(count) + Number(1);
+        	$(".times").html(countStr);
+			localStorage.setItem("count", countStr);
     	}
         time1 = time2;
-    });
+		localStorage.setItem("time1", time1);
+	});
 
     //开始计时
     $(".start").click(function(){
 		clearInterval(interval);
+		localStorage.clear();
     	starTime = time1 = Date.parse(new Date());
+		localStorage.setItem("starTime", starTime);
+		localStorage.setItem("time1", time1);
 		$("#countdown").html('还剩 60:00');
     	$(".times").html(0);
     	$(".count").show();
@@ -66,10 +74,11 @@ $(document).ready(function() {
 
 
 function show(){
-	var baseTime = starTime + 3600 * 1000;
+	var baseTime = Number(starTime) + 3600 * 1000;
 	interval = setInterval(function(){
 		var nowTime = Date.parse(new Date());
 		time = (baseTime - nowTime) / 1000;
+		console.log(time);
 		var minute = parseInt(time / 60);
 		var second = parseInt(time % 60);
 		var minStr = '0' + minute;
@@ -78,8 +87,24 @@ function show(){
 		if (minute == 0 && second == 0){
 			$(".count").hide();
 			clearInterval(interval);
+			localStorage.clear();
 		}
 	}, 1000);
+}
+
+//解决意外退出
+function init(){
+	var localStarTime = localStorage.getItem("starTime");
+	var localTime1 = localStorage.getItem("time1");
+	var localCount = localStorage.getItem("count");
+	if (localStarTime && localTime1) {
+		starTime = localStarTime;
+		time1 = localTime1;
+		show();
+	}
+	if (localCount) {
+		$(".times").html(localCount);
+	}
 }
 </script>
 </html>
