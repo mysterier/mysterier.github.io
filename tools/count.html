@@ -78,14 +78,14 @@ function show(){
 	interval = setInterval(function(){
 		var nowTime = Date.parse(new Date());
 		time = (baseTime - nowTime) / 1000;
-		console.log(time);
 		var minute = parseInt(time / 60);
 		var second = parseInt(time % 60);
 		var minStr = '0' + minute;
 		var secStr = '0' + second;
 		$("#countdown").html('还剩 ' + minStr.substring(minStr.length - 2, minStr.length) + ':' + secStr.substring(secStr.length - 2, secStr.length));
-		if (minute == 0 && second == 0){
+		if (minute <= 0 && second <= 0){
 			$(".count").hide();
+			$("#countdown").html('还剩 00:00');
 			clearInterval(interval);
 			localStorage.clear();
 		}
