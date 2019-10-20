@@ -41,6 +41,7 @@ var time1;
 var time2;
 var length = 30000; //时间间隔毫秒
 var interval;
+var starTime;
 $(document).ready(function() {
     $(".count").click(function(){
     	count = $(".times").html();
@@ -55,7 +56,7 @@ $(document).ready(function() {
     //开始计时
     $(".start").click(function(){
 		clearInterval(interval);
-    	time1 = Date.parse(new Date());
+    	starTime = time1 = Date.parse(new Date());
 		$("#countdown").html('还剩 60:00');
     	$(".times").html(0);
     	$(".count").show();
@@ -65,9 +66,10 @@ $(document).ready(function() {
 
 
 function show(){
-	var time = 3600;
+	var baseTime = starTime + 3600 * 1000;
 	interval = setInterval(function(){
-		time = time - 1;
+		var nowTime = Date.parse(new Date());
+		time = (baseTime - nowTime) / 1000;
 		var minute = parseInt(time / 60);
 		var second = parseInt(time % 60);
 		var minStr = '0' + minute;
